@@ -46,6 +46,17 @@ function writeToFile(courseData, res) {
     });
 }
 
+const addFileToIPFS = async (fileName, filePath) => {
+    const file = fs.readFileSync(filePath);
+    const fileAdded = await ipfs.add({
+        path: fileName,
+        content: file
+    });
+    const fileHash = fileAdded[0].hash;
+
+    return fileHash;
+};
+
 exports.displayCourseBadge = (req, res, next) => {
     const path = require('path').join(__dirname, '../../json/course-badgee.json');
     const fileContents = fs.readFileSync(path, 'utf8');
