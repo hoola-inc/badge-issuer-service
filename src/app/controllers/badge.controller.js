@@ -23,6 +23,22 @@ exports.createNewCourse = async (req, res, next) => {
     }
 }
 
+exports.getCourseById = (req, res) => {
+    const id = req.params.id;
+    CourseSchema.findOne({
+        _id: id
+    })
+    .then(data => {
+        return res.status(200).send({
+            status: true,
+            data: data
+        });
+    })
+    .catch(err => {
+        next(err.message);
+    })
+}
+
 function writeToFile(courseData, res) {
     const path = require('path').join(__dirname, '../../json/course-badgee.json');
     fs.readFile(path, 'utf8', function readFileCallback(err, data) {
